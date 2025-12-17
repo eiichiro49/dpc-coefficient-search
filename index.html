@@ -48,6 +48,16 @@
     .group-badge.univ { background: #fed7d7; color: #c53030; }
     .group-badge.special { background: #feebc8; color: #c05621; }
     .group-badge.standard { background: #c6f6d5; color: #276749; }
+    .coefficient-desc { background: linear-gradient(135deg, #e0e7ff 0%, #f0e6ff 100%); padding: 14px 18px; border-radius: 10px; margin-top: 12px; font-size: 0.9rem; color: #4a5568; border-left: 4px solid #667eea; }
+    .coefficient-desc .desc-title { font-weight: 700; color: #667eea; margin-bottom: 4px; }
+    .info-toggle { background: #667eea; color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 0.85rem; margin-top: 12px; transition: all 0.2s; }
+    .info-toggle:hover { background: #5a67d8; }
+    .info-panel { background: #f8fafc; border-radius: 12px; padding: 20px; margin-top: 16px; border: 1px solid #e2e8f0; }
+    .info-panel h3 { color: #2d3748; font-size: 1rem; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #667eea; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .info-item { background: white; padding: 12px 16px; border-radius: 8px; border-left: 4px solid #667eea; }
+    .info-item .info-name { font-weight: 700; color: #2d3748; font-size: 0.9rem; margin-bottom: 4px; }
+    .info-item .info-text { color: #718096; font-size: 0.8rem; line-height: 1.5; }
   </style>
 </head>
 <body>
@@ -61,20 +71,30 @@
     // 全角英数字を半角に変換する関数
     const normalizeText = (text) => {
       return text
-        // 全角英字を半角に変換（Ａ-Ｚ → A-Z, ａ-ｚ → a-z）
         .replace(/[Ａ-Ｚａ-ｚ]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
-        // 全角数字を半角に変換（０-９ → 0-9）
         .replace(/[０-９]/g, (s) => String.fromCharCode(s.charCodeAt(0) - 0xFEE0))
-        // 全角スペースを半角に変換
         .replace(/　/g, ' ')
-        // 小文字に変換
         .toLowerCase();
+    };
+
+    // 係数の説明データ
+    const coefficientDescriptions = {
+      '効率性係数': '在院日数の短縮度合いを評価',
+      '複雑性係数': '診療内容の難易度・複雑さを評価',
+      'カバー率係数': '多様な疾患への対応力（総合性）を評価',
+      '地域医療係数': '地域医療への貢献度を評価',
+      '体制評価係数': '医療安全・感染対策等の体制整備を評価',
+      '定量評価係数_小児': '小児入院医療の実績を評価',
+      '定量評価係数_小児以外': '小児以外の入院医療実績を評価',
+      '機能評価係数II合計': '医療機関の機能を6つの視点で総合評価する係数',
+      '救急補正係数': '救急医療の受入実績を評価',
     };
 
     const App = () => {
       const [searchTerm, setSearchTerm] = useState('');
       const [selectedCoefficient, setSelectedCoefficient] = useState('機能評価係数II合計');
       const [selectedGroup, setSelectedGroup] = useState('all');
+      const [showInfo, setShowInfo] = useState(false);
 
       const coefficientOptions = [
         { value: '効率性係数', label: '効率性係数' },
@@ -104,12 +124,10 @@
         let results = hospitalData.hospitals;
         
         if (searchTerm.trim()) {
-          // 検索語を正規化
           const normalizedSearchTerm = normalizeText(searchTerm.trim());
           const terms = normalizedSearchTerm.split(/\s+/);
           
           results = results.filter(h => {
-            // 病院名と都道府県も正規化して比較
             const normalizedName = normalizeText(h.医療機関名);
             const normalizedPref = normalizeText(h.都道府県);
             
@@ -194,11 +212,65 @@
                 </select>
               </div>
             </div>
+            
+            <div className="coefficient-desc">
+              <div className="desc-title">📖 {currentLabel}とは？</div>
+              {coefficientDescriptions[selectedCoefficient]}
+            </div>
+            
             <div className="stats-summary">
               <strong>{currentLabel}</strong>の統計（全病院）：
               平均 <strong>{stats.mean.toFixed(5)}</strong>　|　
               標準偏差 <strong>{stats.std.toFixed(5)}</strong>
             </div>
+            
+            <button className="info-toggle" onClick={() => setShowInfo(!showInfo)}>
+              {showInfo ? '📕 係数一覧を閉じる' : '📖 すべての係数の説明を見る'}
+            </button>
+            
+            {showInfo && (
+              <div className="info-panel">
+                <h3>📊 機能評価係数II の各係数について</h3>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <div className="info-name">機能評価係数II</div>
+                    <div className="info-text">医療機関の機能を6つの視点で総合評価する係数</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">効率性係数</div>
+                    <div className="info-text">在院日数の短縮度合いを評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">複雑性係数</div>
+                    <div className="info-text">診療内容の難易度・複雑さを評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">カバー率係数</div>
+                    <div className="info-text">多様な疾患への対応力（総合性）を評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">地域医療係数</div>
+                    <div className="info-text">地域医療への貢献度を評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">体制評価係数</div>
+                    <div className="info-text">医療安全・感染対策等の体制整備を評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">定量評価係数（小児）</div>
+                    <div className="info-text">小児入院医療の実績を評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">定量評価係数（小児以外）</div>
+                    <div className="info-text">小児以外の入院医療実績を評価</div>
+                  </div>
+                  <div className="info-item">
+                    <div className="info-name">救急補正係数</div>
+                    <div className="info-text">救急医療の受入実績を評価</div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className="results-panel">
