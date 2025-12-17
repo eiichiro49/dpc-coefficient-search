@@ -54,7 +54,7 @@
     .info-toggle:hover { background: #5a67d8; }
     .info-panel { background: #f8fafc; border-radius: 12px; padding: 20px; margin-top: 16px; border: 1px solid #e2e8f0; }
     .info-panel h3 { color: #2d3748; font-size: 1rem; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 2px solid #667eea; }
-    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 12px; }
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
     .info-item { background: white; padding: 12px 16px; border-radius: 8px; border-left: 4px solid #667eea; }
     .info-item .info-name { font-weight: 700; color: #2d3748; font-size: 0.9rem; margin-bottom: 4px; }
     .info-item .info-text { color: #718096; font-size: 0.8rem; line-height: 1.5; }
@@ -77,17 +77,17 @@
         .toLowerCase();
     };
 
-    // 係数の説明データ
+    // 係数の説明データ（更新版）
     const coefficientDescriptions = {
-      '効率性係数': '在院日数の短縮度合いを評価',
-      '複雑性係数': '診療内容の難易度・複雑さを評価',
-      'カバー率係数': '多様な疾患への対応力（総合性）を評価',
-      '地域医療係数': '地域医療への貢献度を評価',
-      '体制評価係数': '医療安全・感染対策等の体制整備を評価',
-      '定量評価係数_小児': '小児入院医療の実績を評価',
-      '定量評価係数_小児以外': '小児以外の入院医療実績を評価',
-      '機能評価係数II合計': '医療機関の機能を6つの視点で総合評価する係数',
-      '救急補正係数': '救急医療の受入実績を評価',
+      '効率性係数': '全国平均と比べ、入院期間をどれだけ短縮できたかの評価。',
+      '複雑性係数': '診療密度が高い、難しい手術や処置を担っているかの評価。',
+      'カバー率係数': '様々な種類の疾患（診断群分類）を幅広く診療しているかの評価。',
+      '地域医療係数': '救急や災害医療など、地域で求められる役割を担うことへの評価。',
+      '体制評価係数': '災害拠点病院の指定など、医療提供体制が整っているかの評価。',
+      '定量評価係数_小児': '小児救急や周産期医療などの実績を、定量的に評価するもの。',
+      '定量評価係数_小児以外': '小児以外の救急搬送受入や災害派遣等の実績を定量評価するもの。',
+      '機能評価係数II合計': '病院の効率性や診療実績など、努力や成果を評価する係数。',
+      '救急補正係数': '救急医療の実施状況（救急車の受入等）に応じて加算される評価。',
     };
 
     const App = () => {
@@ -234,39 +234,39 @@
                 <div className="info-grid">
                   <div className="info-item">
                     <div className="info-name">機能評価係数II</div>
-                    <div className="info-text">医療機関の機能を6つの視点で総合評価する係数</div>
+                    <div className="info-text">病院の効率性や診療実績など、努力や成果を評価する係数。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">効率性係数</div>
-                    <div className="info-text">在院日数の短縮度合いを評価</div>
+                    <div className="info-text">全国平均と比べ、入院期間をどれだけ短縮できたかの評価。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">複雑性係数</div>
-                    <div className="info-text">診療内容の難易度・複雑さを評価</div>
+                    <div className="info-text">診療密度が高い、難しい手術や処置を担っているかの評価。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">カバー率係数</div>
-                    <div className="info-text">多様な疾患への対応力（総合性）を評価</div>
+                    <div className="info-text">様々な種類の疾患（診断群分類）を幅広く診療しているかの評価。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">地域医療係数</div>
-                    <div className="info-text">地域医療への貢献度を評価</div>
+                    <div className="info-text">救急や災害医療など、地域で求められる役割を担うことへの評価。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">体制評価係数</div>
-                    <div className="info-text">医療安全・感染対策等の体制整備を評価</div>
+                    <div className="info-text">災害拠点病院の指定など、医療提供体制が整っているかの評価。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">定量評価係数（小児）</div>
-                    <div className="info-text">小児入院医療の実績を評価</div>
+                    <div className="info-text">小児救急や周産期医療などの実績を、定量的に評価するもの。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">定量評価係数（小児以外）</div>
-                    <div className="info-text">小児以外の入院医療実績を評価</div>
+                    <div className="info-text">小児以外の救急搬送受入や災害派遣等の実績を定量評価するもの。</div>
                   </div>
                   <div className="info-item">
                     <div className="info-name">救急補正係数</div>
-                    <div className="info-text">救急医療の受入実績を評価</div>
+                    <div className="info-text">救急医療の実施状況（救急車の受入等）に応じて加算される評価。</div>
                   </div>
                 </div>
               </div>
